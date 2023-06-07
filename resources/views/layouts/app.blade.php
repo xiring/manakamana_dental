@@ -15,6 +15,13 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <style>
+        .float-right{
+            float: right;
+        }
+    </style>
+    <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    <link href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
 </head>
 <body>
     <div id="app">
@@ -38,6 +45,9 @@
                         <!-- Authentication Links -->
                         @guest
                         @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('client.index') }}">Clients</a>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
@@ -62,8 +72,36 @@
         </nav>
 
         <main class="py-4">
-            @yield('content')
+            <div class="container">
+                <div class="row justify-content-center">
+                    @include('flash::message')
+                    @yield('content')
+                </div>
+            </div>
         </main>
     </div>
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+<script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+<script>
+    $(function () {
+        $('#data-table-list').dataTable({
+            'paging'      : true,
+            'lengthChange': true,
+            'searching'   : true,
+            'ordering'    : true,
+            'info'        : true,
+            'autoWidth'   : true,
+            'order'       : [[0,"desc"]],
+            "lengthMenu": [[20, 30, 40, 50, 100, -1], [20, 30, 40, 50, 100, "All"]],
+            dom: 'lfrtip'
+        });
+
+    });
+</script>
+@yield('customScript')
 </html>
