@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('mobile_number')->unique()->nullable();
             $table->string('address');
             $table->string('blood_group')->nullable();
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }

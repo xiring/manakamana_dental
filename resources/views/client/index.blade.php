@@ -4,7 +4,7 @@
 
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header">All Menus <a href="{{ route('client.create') }}" class="btn btn-rounded btn-outline-primary float-right">Add</a></div>
+            <div class="card-header">All Clients <a href="{{ route('client.create') }}" class="btn btn-rounded btn-outline-primary float-right">Add</a></div>
             <div class="card-body">
                 <table id="data-table-list" class="table table-bordered">
                     <thead>

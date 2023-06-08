@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ClientRequest;
 use App\Models\Client;
-use Illuminate\Http\Request;
 
+/**
+ * Class ClientController
+ * @package App\Http\Controllers
+ */
 class ClientController extends Controller
 {
     /**
@@ -21,46 +25,55 @@ class ClientController extends Controller
      */
     public function create()
     {
-        //
+        return view('client.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ClientRequest $request)
     {
-        //
-    }
+        $validated = $request->validated();
+        $data = $request->only([ 'customer_id', 'first_name', 'last_name', 'gender', 'age', 'email', 'mobile_number', 'address', 'blood_group']);
+        $data['customer_id'] = 'MD-PT-' . rand(1000, 9999);
+        Client::create($data);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Client $client)
-    {
-        //
+        flash('Client added successfully.', 'success');
+        return redirect()->route('client.index');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Client $client)
+    public function edit($client_id)
     {
-        //
+        $client = Client::find($client_id);
+        return view('client.edit', compact('client'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Client $client)
+    public function update(ClientRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $data = $request->only(['first_name', 'last_name', 'gender', 'age', 'email', 'mobile_number', 'address', 'blood_group']);
+        Client::find($request->id)->update($data);
+
+        flash('Client updated successfully.', 'success');
+        return redirect()->route('client.index');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @param $id
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Client $client)
-    {
-        //
+    public function changeStatus($id){
+        $client = Client::find($id);
+        $client->status = ($client->status == 1) ? 0 : 1;
+        $client->update();
+        flash('Client status updated successfully.', 'success');
+        return redirect()->route('client.index');
     }
 }
